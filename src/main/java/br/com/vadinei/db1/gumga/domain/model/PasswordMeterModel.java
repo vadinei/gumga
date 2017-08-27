@@ -64,11 +64,14 @@ public class PasswordMeterModel implements Serializable
 	private int consecutiveNumbersCount;
 	private int consecutiveNumbersBonus;
 
-	private int sequentialLetterCount;
-	private int sequentialLetterBonus;
+	private int sequentialLettersCount;
+	private int sequentialLettersBonus;
 
-	private int sequentialNumberCount;
-	private int sequentialNumberBonus;
+	private int sequentialNumbersCount;
+	private int sequentialNumbersBonus;
+
+	private int sequentialSymbolsCount;
+	private int sequentialSymbolsBonus;
 
 	/**
 	 * Construtor da Classe.
@@ -704,93 +707,135 @@ public class PasswordMeterModel implements Serializable
 	}
 
 	/**
-	 * @author José Vádinei Soares (vadinei@hotmail.com) 26 de ago de 2017 -
-	 *         11:42:42
-	 * @return Retorna o atributo sequentialLetterCount.
+	 * @author José Vádinei Soares (vadinei@hotmail.com) 27 de ago de 2017 -
+	 *         02:06:20
+	 * @return Retorna o atributo sequentialLettersCount.
 	 */
-	public int getSequentialLetterCount()
+	public int getSequentialLettersCount()
 	{
-		return this.sequentialLetterCount;
+		return this.sequentialLettersCount;
 	}
 
 	/**
-	 * @author José Vádinei Soares (vadinei@hotmail.com) 26 de ago de 2017 -
-	 *         11:42:42
-	 * @param sequentialLetterCount
-	 *            Define o atributo sequentialLetterCount.
+	 * @author José Vádinei Soares (vadinei@hotmail.com) 27 de ago de 2017 -
+	 *         02:06:20
+	 * @param sequentialLettersCount
+	 *            Define o atributo sequentialLettersCount.
 	 */
-	public void setSequentialLetterCount( final int sequentialLetterCount )
+	public void setSequentialLettersCount( final int sequentialLettersCount )
 	{
-		this.sequentialLetterCount = sequentialLetterCount;
+		this.sequentialLettersCount = sequentialLettersCount;
 	}
 
 	/**
-	 * @author José Vádinei Soares (vadinei@hotmail.com) 26 de ago de 2017 -
-	 *         11:42:42
-	 * @return Retorna o atributo sequentialLetterBonus.
+	 * @author José Vádinei Soares (vadinei@hotmail.com) 27 de ago de 2017 -
+	 *         02:06:20
+	 * @return Retorna o atributo sequentialLettersBonus.
 	 */
-	public int getSequentialLetterBonus()
+	public int getSequentialLettersBonus()
 	{
-		return this.sequentialLetterBonus;
+		return this.sequentialLettersBonus;
 	}
 
 	/**
-	 * @author José Vádinei Soares (vadinei@hotmail.com) 26 de ago de 2017 -
-	 *         11:42:42
-	 * @param sequentialLetterBonus
-	 *            Define o atributo sequentialLetterBonus.
+	 * @author José Vádinei Soares (vadinei@hotmail.com) 27 de ago de 2017 -
+	 *         02:06:20
+	 * @param sequentialLettersBonus
+	 *            Define o atributo sequentialLettersBonus.
 	 */
-	public void setSequentialLetterBonus( final int sequentialLetterBonus )
+	public void setSequentialLettersBonus( final int sequentialLettersBonus )
 	{
-		this.sequentialLetterBonus = sequentialLetterBonus;
+		this.sequentialLettersBonus = sequentialLettersBonus;
 	}
 
 	/**
-	 * @author José Vádinei Soares (vadinei@hotmail.com) 26 de ago de 2017 -
-	 *         11:42:42
-	 * @return Retorna o atributo sequentialNumberCount.
+	 * @author José Vádinei Soares (vadinei@hotmail.com) 27 de ago de 2017 -
+	 *         02:06:20
+	 * @return Retorna o atributo sequentialNumbersCount.
 	 */
-	public int getSequentialNumberCount()
+	public int getSequentialNumbersCount()
 	{
-		return this.sequentialNumberCount;
+		return this.sequentialNumbersCount;
 	}
 
 	/**
-	 * @author José Vádinei Soares (vadinei@hotmail.com) 26 de ago de 2017 -
-	 *         11:42:42
-	 * @param sequentialNumberCount
-	 *            Define o atributo sequentialNumberCount.
+	 * @author José Vádinei Soares (vadinei@hotmail.com) 27 de ago de 2017 -
+	 *         02:06:20
+	 * @param sequentialNumbersCount
+	 *            Define o atributo sequentialNumbersCount.
 	 */
-	public void setSequentialNumberCount( final int sequentialNumberCount )
+	public void setSequentialNumbersCount( final int sequentialNumbersCount )
 	{
-		this.sequentialNumberCount = sequentialNumberCount;
+		this.sequentialNumbersCount = sequentialNumbersCount;
 	}
 
 	/**
-	 * @author José Vádinei Soares (vadinei@hotmail.com) 26 de ago de 2017 -
-	 *         11:42:42
-	 * @return Retorna o atributo sequentialNumberBonus.
+	 * @author José Vádinei Soares (vadinei@hotmail.com) 27 de ago de 2017 -
+	 *         02:06:20
+	 * @return Retorna o atributo sequentialNumbersBonus.
 	 */
-	public int getSequentialNumberBonus()
+	public int getSequentialNumbersBonus()
 	{
-		return this.sequentialNumberBonus;
+		return this.sequentialNumbersBonus;
 	}
 
 	/**
-	 * @author José Vádinei Soares (vadinei@hotmail.com) 26 de ago de 2017 -
-	 *         11:42:42
-	 * @param sequentialNumberBonus
-	 *            Define o atributo sequentialNumberBonus.
+	 * @author José Vádinei Soares (vadinei@hotmail.com) 27 de ago de 2017 -
+	 *         02:06:20
+	 * @param sequentialNumbersBonus
+	 *            Define o atributo sequentialNumbersBonus.
 	 */
-	public void setSequentialNumberBonus( final int sequentialNumberBonus )
+	public void setSequentialNumbersBonus( final int sequentialNumbersBonus )
 	{
-		this.sequentialNumberBonus = sequentialNumberBonus;
+		this.sequentialNumbersBonus = sequentialNumbersBonus;
+	}
+
+	/**
+	 * @author José Vádinei Soares (vadinei@hotmail.com) 27 de ago de 2017 -
+	 *         02:06:20
+	 * @return Retorna o atributo sequentialSymbolsCount.
+	 */
+	public int getSequentialSymbolsCount()
+	{
+		return this.sequentialSymbolsCount;
+	}
+
+	/**
+	 * @author José Vádinei Soares (vadinei@hotmail.com) 27 de ago de 2017 -
+	 *         02:06:20
+	 * @param sequentialSymbolsCount
+	 *            Define o atributo sequentialSymbolsCount.
+	 */
+	public void setSequentialSymbolsCount( final int sequentialSymbolsCount )
+	{
+		this.sequentialSymbolsCount = sequentialSymbolsCount;
+	}
+
+	/**
+	 * @author José Vádinei Soares (vadinei@hotmail.com) 27 de ago de 2017 -
+	 *         02:06:20
+	 * @return Retorna o atributo sequentialSymbolsBonus.
+	 */
+	public int getSequentialSymbolsBonus()
+	{
+		return this.sequentialSymbolsBonus;
+	}
+
+	/**
+	 * @author José Vádinei Soares (vadinei@hotmail.com) 27 de ago de 2017 -
+	 *         02:06:20
+	 * @param sequentialSymbolsBonus
+	 *            Define o atributo sequentialSymbolsBonus.
+	 */
+	public void setSequentialSymbolsBonus( final int sequentialSymbolsBonus )
+	{
+		this.sequentialSymbolsBonus = sequentialSymbolsBonus;
 	}
 
 	/*
-	 * @author José Vádinei Soares (vadinei@hotmail.com) 26 de ago de 2017 -
-	 * 11:43:11 (non-Javadoc)
-	 *
+	 * @author José Vádinei Soares (vadinei@hotmail.com) 27 de ago de 2017 -
+	 * 02:06:30 (non-Javadoc)
+	 * 
 	 * @see java.lang.Object#hashCode()
 	 */
 	@Override
@@ -823,10 +868,12 @@ public class PasswordMeterModel implements Serializable
 		result = ( prime * result ) + this.requirementsBonus;
 		result = ( prime * result ) + this.requirementsCount;
 		result = ( prime * result ) + this.score;
-		result = ( prime * result ) + this.sequentialLetterBonus;
-		result = ( prime * result ) + this.sequentialLetterCount;
-		result = ( prime * result ) + this.sequentialNumberBonus;
-		result = ( prime * result ) + this.sequentialNumberCount;
+		result = ( prime * result ) + this.sequentialLettersBonus;
+		result = ( prime * result ) + this.sequentialLettersCount;
+		result = ( prime * result ) + this.sequentialNumbersBonus;
+		result = ( prime * result ) + this.sequentialNumbersCount;
+		result = ( prime * result ) + this.sequentialSymbolsBonus;
+		result = ( prime * result ) + this.sequentialSymbolsCount;
 		result = ( prime * result ) + this.symbolBonus;
 		result = ( prime * result ) + this.symbolCount;
 		result = ( prime * result ) + this.uppercaseLetterBonus;
@@ -835,9 +882,9 @@ public class PasswordMeterModel implements Serializable
 	}
 
 	/*
-	 * @author José Vádinei Soares (vadinei@hotmail.com) 26 de ago de 2017 -
-	 * 11:43:11 (non-Javadoc)
-	 *
+	 * @author José Vádinei Soares (vadinei@hotmail.com) 27 de ago de 2017 -
+	 * 02:06:30 (non-Javadoc)
+	 * 
 	 * @see java.lang.Object#equals(java.lang.Object)
 	 */
 	@Override
@@ -863,11 +910,10 @@ public class PasswordMeterModel implements Serializable
 				return false;
 			}
 		}
-		else
-			if ( !this.complexity.equals( other.complexity ) )
-			{
-				return false;
-			}
+		else if ( !this.complexity.equals( other.complexity ) )
+		{
+			return false;
+		}
 		if ( this.consecutiveLowercaseLetterBonus != other.consecutiveLowercaseLetterBonus )
 		{
 			return false;
@@ -947,11 +993,10 @@ public class PasswordMeterModel implements Serializable
 				return false;
 			}
 		}
-		else
-			if ( !this.password.equals( other.password ) )
-			{
-				return false;
-			}
+		else if ( !this.password.equals( other.password ) )
+		{
+			return false;
+		}
 		if ( this.repeatCharactersBonus != other.repeatCharactersBonus )
 		{
 			return false;
@@ -972,19 +1017,27 @@ public class PasswordMeterModel implements Serializable
 		{
 			return false;
 		}
-		if ( this.sequentialLetterBonus != other.sequentialLetterBonus )
+		if ( this.sequentialLettersBonus != other.sequentialLettersBonus )
 		{
 			return false;
 		}
-		if ( this.sequentialLetterCount != other.sequentialLetterCount )
+		if ( this.sequentialLettersCount != other.sequentialLettersCount )
 		{
 			return false;
 		}
-		if ( this.sequentialNumberBonus != other.sequentialNumberBonus )
+		if ( this.sequentialNumbersBonus != other.sequentialNumbersBonus )
 		{
 			return false;
 		}
-		if ( this.sequentialNumberCount != other.sequentialNumberCount )
+		if ( this.sequentialNumbersCount != other.sequentialNumbersCount )
+		{
+			return false;
+		}
+		if ( this.sequentialSymbolsBonus != other.sequentialSymbolsBonus )
+		{
+			return false;
+		}
+		if ( this.sequentialSymbolsCount != other.sequentialSymbolsCount )
 		{
 			return false;
 		}

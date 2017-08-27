@@ -29,7 +29,13 @@ public class PasswordMeterServiceTest
 		// final PasswordMeterModel model = this.service.checkPassword( "1234",
 		// 8 );
 
-		final PasswordMeterModel model = this.service.checkPassword( "aaaAA", 8 );
+		// final PasswordMeterModel model = this.service.checkPassword( "aaaAA",
+		// 8 );
+
+		// final PasswordMeterModel model = this.service.checkPassword(
+		// "Tururu2017", 8 );
+
+		final PasswordMeterModel model = this.service.checkPassword( "abcde12345@#$%", 8 );
 
 		System.out.println( "-----------------------------------------------------" );
 		System.out.print( "ADDITIONS:" );
@@ -81,11 +87,29 @@ public class PasswordMeterServiceTest
 		System.out.print( "\t" + model.getRepeatCharactersCount() );
 		System.out.println( "\t" + model.getRepeatCharactersBonus() );
 
-		System.out.println( "Consecutive Uppercase Letters.......:" );
-		System.out.println( "Consecutive Lowercase Letters.......:" );
-		System.out.println( "Consecutive Numbers.................:" );
-		System.out.println( "Sequential Letters..................:" );
-		System.out.println( "Sequential Numbers..................:" );
+		System.out.print( "Consecutive Uppercase Letters.......:" );
+		System.out.print( "\t" + model.getConsecutiveUppercaseLetterCount() );
+		System.out.println( "\t" + model.getConsecutiveUppercaseLetterBonus() );
+
+		System.out.print( "Consecutive Lowercase Letters.......:" );
+		System.out.print( "\t" + model.getConsecutiveLowercaseLetterCount() );
+		System.out.println( "\t" + model.getConsecutiveLowercaseLetterBonus() );
+
+		System.out.print( "Consecutive Numbers.................:" );
+		System.out.print( "\t" + model.getConsecutiveNumbersCount() );
+		System.out.println( "\t" + model.getConsecutiveNumbersBonus() );
+
+		System.out.print( "Sequential Letters..................:" );
+		System.out.print( "\t" + model.getSequentialLettersCount() );
+		System.out.println( "\t" + model.getSequentialLettersBonus() );
+
+		System.out.print( "Sequential Numbers..................:" );
+		System.out.print( "\t" + model.getSequentialNumbersCount() );
+		System.out.println( "\t" + model.getSequentialNumbersBonus() );
+
+		System.out.print( "Sequential Symbols..................:" );
+		System.out.print( "\t" + model.getSequentialSymbolsCount() );
+		System.out.println( "\t" + model.getSequentialSymbolsBonus() );
 		System.out.println( "" );
 	}
 
