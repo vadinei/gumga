@@ -50,6 +50,7 @@ public class PasswordMeterService implements Serializable
 	 * @param minimumPasswordLength
 	 * @return PasswordMeterModel
 	 */
+	@SuppressWarnings( "unused" )
 	public PasswordMeterModel checkPassword( final String password, int minimumPasswordLength )
 	{
 		final PasswordMeterModel model = new PasswordMeterModel();
@@ -85,9 +86,9 @@ public class PasswordMeterService implements Serializable
 
 			int consecutiveUppercaseLetterCount = PasswordMeterService.CNS_ZERO;
 			int consecutiveLowercaseLetterCount = PasswordMeterService.CNS_ZERO;
-			int consecutiveCharacterCount = PasswordMeterService.CNS_ZERO;
 			int consecutiveNumberCount = PasswordMeterService.CNS_ZERO;
-			int consecutiveSymbolCount = PasswordMeterService.CNS_ZERO;
+			int consecutiveSymbolCount = PasswordMeterService.CNS_ZERO; // Unused.
+			int consecutiveCharacterCount = PasswordMeterService.CNS_ZERO; // Unused.
 
 			int requirementsCount = PasswordMeterService.CNS_ZERO;
 			int requirementsCharacter = PasswordMeterService.CNS_ZERO;
@@ -99,7 +100,7 @@ public class PasswordMeterService implements Serializable
 			int sequentialLettersCount = PasswordMeterService.CNS_ZERO;
 			int sequentialNumbersCount = PasswordMeterService.CNS_ZERO;
 			int sequentialSymbolsCount = PasswordMeterService.CNS_ZERO;
-			int sequentialCharacterCount = PasswordMeterService.CNS_ZERO;
+			int sequentialCharacterCount = PasswordMeterService.CNS_ZERO; // Unused.
 
 			for ( int i = PasswordMeterService.CNS_ZERO; i < arrPasswordSplitLength; i++ )
 			{
@@ -186,7 +187,7 @@ public class PasswordMeterService implements Serializable
 					if ( ( i != j ) && ( item.equals( itemAux ) ) )
 					{
 						exists = Boolean.TRUE;
-						replicateIncrement += Math.abs( arrPasswordSplitLength / ( j - i ) );
+						replicateIncrement += Math.abs( ( ( double ) arrPasswordSplitLength ) / ( j - i ) );
 					}
 				}
 
@@ -194,9 +195,9 @@ public class PasswordMeterService implements Serializable
 				{
 					replicateCharacter++;
 					uniqueCharacter = ( arrPasswordSplitLength - replicateCharacter );
-					replicateIncrement = ( ( uniqueCharacter > PasswordMeterService.CNS_ZERO )
+					replicateIncrement = ( uniqueCharacter != PasswordMeterService.CNS_ZERO )
 							? Math.ceil( replicateIncrement / uniqueCharacter )
-							: Math.ceil( replicateIncrement ) );
+							: Math.ceil( replicateIncrement );
 				}
 			}
 

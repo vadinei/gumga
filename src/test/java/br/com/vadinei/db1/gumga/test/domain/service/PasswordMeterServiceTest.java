@@ -20,15 +20,15 @@ public class PasswordMeterServiceTest
 	@Test
 	public void printCheckPassword()
 	{
-		final PasswordMeterModel model = this.service.checkPassword( "aaAaA12@", 8 );
+		// final PasswordMeterModel model = this.service.checkPassword(
+		// "aaAaA12@", 8 );
 
-		// final PasswordMeterModel model = this.service.checkPassword( "aaAa",
+		final PasswordMeterModel model = this.service.checkPassword( "aaAaA", 8 );
+
+		// final PasswordMeterModel model = this.service.checkPassword( "aaaAA",
 		// 8 );
 
 		// final PasswordMeterModel model = this.service.checkPassword( "1234",
-		// 8 );
-
-		// final PasswordMeterModel model = this.service.checkPassword( "aaaAA",
 		// 8 );
 
 		// final PasswordMeterModel model = this.service.checkPassword(
