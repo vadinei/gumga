@@ -20,7 +20,16 @@ public class PasswordMeterServiceTest
 	@Test
 	public void printCheckPassword()
 	{
-		final PasswordMeterModel model = this.service.checkPassword( "aaAaA12@", 8 );
+		// final PasswordMeterModel model = this.service.checkPassword(
+		// "aaAaA12@", 8 );
+
+		// final PasswordMeterModel model = this.service.checkPassword( "aaAa",
+		// 8 );
+
+		// final PasswordMeterModel model = this.service.checkPassword( "1234",
+		// 8 );
+
+		final PasswordMeterModel model = this.service.checkPassword( "aaaAA", 8 );
 
 		System.out.println( "-----------------------------------------------------" );
 		System.out.print( "ADDITIONS:" );
@@ -48,7 +57,10 @@ public class PasswordMeterServiceTest
 		System.out.print( "\t" + model.getSymbolCount() );
 		System.out.println( "\t" + model.getSymbolBonus() );
 
-		System.out.println( "Middle Numbers or Symbols...........:" );
+		System.out.print( "Middle Numbers or Symbols...........:" );
+		System.out.print( "\t" + model.getMiddleNumberSymbolCount() );
+		System.out.println( "\t" + model.getMiddleNumberSymbolBonus() );
+
 		System.out.println( "Requirements........................:" );
 		System.out.println( "" );
 		System.out.println( "-----------------------------------------------------" );
@@ -56,9 +68,19 @@ public class PasswordMeterServiceTest
 		System.out.println( "\t\t\t\tCOUNT" + "\tBONUS" );
 		System.out.println( "-----------------------------------------------------" );
 		System.out.println( "" );
-		System.out.println( "Letters Only........................:" );
-		System.out.println( "Numbers Only........................:" );
-		System.out.println( "Repeat Characters (Case Insensitive):" );
+
+		System.out.print( "Letters Only........................:" );
+		System.out.print( "\t" + model.getLettersOnlyCount() );
+		System.out.println( "\t" + model.getLettersOnlyBonus() );
+
+		System.out.print( "Numbers Only........................:" );
+		System.out.print( "\t" + model.getNumbersOnlyCount() );
+		System.out.println( "\t" + model.getNumbersOnlyBonus() );
+
+		System.out.print( "Repeat Characters (Case Insensitive):" );
+		System.out.print( "\t" + model.getRepeatCharactersCount() );
+		System.out.println( "\t" + model.getRepeatCharactersBonus() );
+
 		System.out.println( "Consecutive Uppercase Letters.......:" );
 		System.out.println( "Consecutive Lowercase Letters.......:" );
 		System.out.println( "Consecutive Numbers.................:" );
