@@ -23,7 +23,8 @@ public class PasswordMeterServiceTest
 		// final PasswordMeterModel model = this.service.checkPassword(
 		// "aaAaA12@", 8 );
 
-		final PasswordMeterModel model = this.service.checkPassword( "aaAaA", 8 );
+		// final PasswordMeterModel model = this.service.checkPassword( "aaAaA",
+		// 8 );
 
 		// final PasswordMeterModel model = this.service.checkPassword( "aaaAA",
 		// 8 );
@@ -34,15 +35,16 @@ public class PasswordMeterServiceTest
 		// final PasswordMeterModel model = this.service.checkPassword(
 		// "Tururu2017", 8 );
 
-		// final PasswordMeterModel model = this.service.checkPassword(
-		// "abcde12345@#$%", 8 );
+		final PasswordMeterModel model = this.service.checkPassword( "abcde12345@#$%", 0 );
 
 		System.out.println( "-----------------------------------------------------" );
-		System.out.println( "PASSWORD.: " + model.getPassword() );
+		System.out.println( "PASSWORD..: " + model.getPassword() );
+		System.out.println( "SCORE.....: " + model.getScore() );
+		System.out.println( "COMPLEXITY: " + model.getComplexity() );
 		System.out.println( "-----------------------------------------------------" );
 		System.out.println( "" );
 		System.out.println( "-----------------------------------------------------" );
-		System.out.print( "ADDITIONS:" );
+		System.out.print( "ADDITIONS.:" );
 		System.out.println( "\t\t\t\tCOUNT" + "\tBONUS" );
 		System.out.println( "-----------------------------------------------------" );
 		System.out.println( "" );
@@ -77,7 +79,7 @@ public class PasswordMeterServiceTest
 		System.out.println( "" );
 
 		System.out.println( "-----------------------------------------------------" );
-		System.out.print( "DEDUCTIONS:" );
+		System.out.print( "DEDUCTIONS.:" );
 		System.out.println( "\t\t\t\tCOUNT" + "\tBONUS" );
 		System.out.println( "-----------------------------------------------------" );
 		System.out.println( "" );
