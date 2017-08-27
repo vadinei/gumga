@@ -20,8 +20,7 @@ public class PasswordMeterServiceTest
 	@Test
 	public void printCheckPassword()
 	{
-		// final PasswordMeterModel model = this.service.checkPassword(
-		// "aaAaA12@", 8 );
+		final PasswordMeterModel model = this.service.checkPassword( "aaAaA12@", 8 );
 
 		// final PasswordMeterModel model = this.service.checkPassword( "aaAa",
 		// 8 );
@@ -35,8 +34,13 @@ public class PasswordMeterServiceTest
 		// final PasswordMeterModel model = this.service.checkPassword(
 		// "Tururu2017", 8 );
 
-		final PasswordMeterModel model = this.service.checkPassword( "abcde12345@#$%", 8 );
+		// final PasswordMeterModel model = this.service.checkPassword(
+		// "abcde12345@#$%", 8 );
 
+		System.out.println( "-----------------------------------------------------" );
+		System.out.println( "PASSWORD.: " + model.getPassword() );
+		System.out.println( "-----------------------------------------------------" );
+		System.out.println( "" );
 		System.out.println( "-----------------------------------------------------" );
 		System.out.print( "ADDITIONS:" );
 		System.out.println( "\t\t\t\tCOUNT" + "\tBONUS" );
@@ -67,10 +71,13 @@ public class PasswordMeterServiceTest
 		System.out.print( "\t" + model.getMiddleNumberSymbolCount() );
 		System.out.println( "\t" + model.getMiddleNumberSymbolBonus() );
 
-		System.out.println( "Requirements........................:" );
+		System.out.print( "Requirements........................:" );
+		System.out.print( "\t" + model.getRequirementsCount() );
+		System.out.println( "\t" + model.getRequirementsBonus() );
 		System.out.println( "" );
+
 		System.out.println( "-----------------------------------------------------" );
-		System.out.print( "DEDUCATIONS:" );
+		System.out.print( "DEDUCTIONS:" );
 		System.out.println( "\t\t\t\tCOUNT" + "\tBONUS" );
 		System.out.println( "-----------------------------------------------------" );
 		System.out.println( "" );

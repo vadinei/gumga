@@ -18,8 +18,6 @@ public class PasswordMeterService implements Serializable
 
 	private static final double CNS_ZERO_DOUBLE = 0.0;
 
-	private static final int CNS_ONE_POSITIVE = 1;
-
 	private static final int CNS_ONE_NEGATIVE = -1;
 
 	private static final int CNS_MULTIPLIER_FACTOR_2 = 2;
@@ -49,10 +47,10 @@ public class PasswordMeterService implements Serializable
 	 * @author José Vádinei Soares (vadinei@hotmail.com) 27 de ago de 2017 -
 	 *         02:09:59
 	 * @param password
-	 * @param minPasswordLength
+	 * @param minimumPasswordLength
 	 * @return PasswordMeterModel
 	 */
-	public PasswordMeterModel checkPassword( final String password, int minPasswordLength )
+	public PasswordMeterModel checkPassword( final String password, int minimumPasswordLength )
 	{
 		final PasswordMeterModel model = new PasswordMeterModel();
 
@@ -61,9 +59,9 @@ public class PasswordMeterService implements Serializable
 			return model;
 		}
 
-		if ( minPasswordLength < 4 )
+		if ( minimumPasswordLength < 8 )
 		{
-			minPasswordLength = 4;
+			minimumPasswordLength = 8;
 		}
 
 		final int passwordLength = password.length();
@@ -72,6 +70,8 @@ public class PasswordMeterService implements Serializable
 
 		if ( ( arrPasswordSplit != null ) && ( arrPasswordSplit.length > PasswordMeterService.CNS_ZERO ) )
 		{
+			final int arrPasswordSplitLength = arrPasswordSplit.length;
+
 			int uppercaseLetterCount = PasswordMeterService.CNS_ZERO;
 			int lowercaseLetterCount = PasswordMeterService.CNS_ZERO;
 			int numberCount = PasswordMeterService.CNS_ZERO;
@@ -89,17 +89,17 @@ public class PasswordMeterService implements Serializable
 			int consecutiveNumberCount = PasswordMeterService.CNS_ZERO;
 			int consecutiveSymbolCount = PasswordMeterService.CNS_ZERO;
 
-			int replicateCharacter = PasswordMeterService.CNS_ZERO;
-			int uniqueCharacter = PasswordMeterService.CNS_ZERO;
+			int requirementsCount = PasswordMeterService.CNS_ZERO;
+			int requirementsCharacter = PasswordMeterService.CNS_ZERO;
 
+			int uniqueCharacter = PasswordMeterService.CNS_ZERO;
+			int replicateCharacter = PasswordMeterService.CNS_ZERO;
 			double replicateIncrement = PasswordMeterService.CNS_ZERO_DOUBLE;
 
 			int sequentialLettersCount = PasswordMeterService.CNS_ZERO;
 			int sequentialNumbersCount = PasswordMeterService.CNS_ZERO;
 			int sequentialSymbolsCount = PasswordMeterService.CNS_ZERO;
 			int sequentialCharacterCount = PasswordMeterService.CNS_ZERO;
-
-			final int arrPasswordSplitLength = arrPasswordSplit.length;
 
 			for ( int i = PasswordMeterService.CNS_ZERO; i < arrPasswordSplitLength; i++ )
 			{
@@ -138,7 +138,7 @@ public class PasswordMeterService implements Serializable
 				// Number Matches
 				else if ( item.matches( "[0-9]" ) )
 				{
-					if ( ( i > 0 ) && ( i < ( arrPasswordSplitLength - 1 ) ) )
+					if ( ( i > PasswordMeterService.CNS_ZERO ) && ( i < ( arrPasswordSplitLength - 1 ) ) )
 					{
 						middleNumberSymbolCount++;
 					}
@@ -158,7 +158,7 @@ public class PasswordMeterService implements Serializable
 				// Symbol Matches
 				else if ( item.matches( "[^a-zA-Z0-9_]" ) )
 				{
-					if ( ( i > 0 ) && ( i < ( arrPasswordSplitLength - 1 ) ) )
+					if ( ( i > PasswordMeterService.CNS_ZERO ) && ( i < ( arrPasswordSplitLength - 1 ) ) )
 					{
 						middleNumberSymbolCount++;
 					}
@@ -194,7 +194,8 @@ public class PasswordMeterService implements Serializable
 				{
 					replicateCharacter++;
 					uniqueCharacter = ( arrPasswordSplitLength - replicateCharacter );
-					replicateIncrement = ( ( uniqueCharacter > 0 ) ? Math.ceil( replicateIncrement / uniqueCharacter )
+					replicateIncrement = ( ( uniqueCharacter > PasswordMeterService.CNS_ZERO )
+							? Math.ceil( replicateIncrement / uniqueCharacter )
 							: Math.ceil( replicateIncrement ) );
 				}
 			}
@@ -203,7 +204,7 @@ public class PasswordMeterService implements Serializable
 			final String passwordLowercase = password.toLowerCase();
 			final int arrayAlphabetSequenceLength = ( PasswordMeterService.CNS_ARRAY_ALPHABET.length() - 3 );
 
-			for ( int l = 0; l < arrayAlphabetSequenceLength; l++ )
+			for ( int l = PasswordMeterService.CNS_ZERO; l < arrayAlphabetSequenceLength; l++ )
 			{
 				final String forward = PasswordMeterService.CNS_ARRAY_ALPHABET.substring( l, ( l + 3 ) );
 
@@ -220,7 +221,7 @@ public class PasswordMeterService implements Serializable
 			// Verificando sequência de caracteres >> Number
 			final int arrayNumberSequenceLength = ( PasswordMeterService.CNS_ARRAY_NUMBER.length() - 3 );
 
-			for ( int n = 0; n < arrayNumberSequenceLength; n++ )
+			for ( int n = PasswordMeterService.CNS_ZERO; n < arrayNumberSequenceLength; n++ )
 			{
 				final String forward = PasswordMeterService.CNS_ARRAY_NUMBER.substring( n, ( n + 3 ) );
 
@@ -237,7 +238,7 @@ public class PasswordMeterService implements Serializable
 			// Verificando sequência de caracteres >> Symbol
 			final int arraySymbolSequenceLength = ( PasswordMeterService.CNS_ARRAY_SYMBOL.length() - 3 );
 
-			for ( int s = 0; s < arraySymbolSequenceLength; s++ )
+			for ( int s = PasswordMeterService.CNS_ZERO; s < arraySymbolSequenceLength; s++ )
 			{
 				final String forward = PasswordMeterService.CNS_ARRAY_SYMBOL.substring( s, ( s + 3 ) );
 
@@ -256,13 +257,12 @@ public class PasswordMeterService implements Serializable
 
 			// Definindo "Number of Characters"
 			model.setNumberCharacterCount( passwordLength );
-
 			final int numberCharacterBonus = passwordLength * PasswordMeterService.CNS_MULTIPLIER_FACTOR_4;
 			model.setNumberCharacterBonus( numberCharacterBonus );
 
 			// Definindo "Uppercase Letters"
 			model.setUppercaseLetterCount( uppercaseLetterCount );
-			if ( ( uppercaseLetterCount > 0 ) && ( uppercaseLetterCount < passwordLength ) )
+			if ( ( uppercaseLetterCount > PasswordMeterService.CNS_ZERO ) && ( uppercaseLetterCount < passwordLength ) )
 			{
 				final int uppercaseLetterBonus = ( ( passwordLength - uppercaseLetterCount )
 						* PasswordMeterService.CNS_MULTIPLIER_FACTOR_2 );
@@ -271,7 +271,7 @@ public class PasswordMeterService implements Serializable
 
 			// Definindo "Lowercase Letters"
 			model.setLowercaseLetterCount( lowercaseLetterCount );
-			if ( ( lowercaseLetterCount > 0 ) && ( lowercaseLetterCount < passwordLength ) )
+			if ( ( lowercaseLetterCount > PasswordMeterService.CNS_ZERO ) && ( lowercaseLetterCount < passwordLength ) )
 			{
 				final int lowercaseLetterBonus = ( ( passwordLength - lowercaseLetterCount )
 						* PasswordMeterService.CNS_MULTIPLIER_FACTOR_2 );
@@ -280,7 +280,7 @@ public class PasswordMeterService implements Serializable
 
 			// Definindo "Numbers"
 			model.setNumberCount( numberCount );
-			if ( ( numberCount > 0 ) && ( numberCount < passwordLength ) )
+			if ( ( numberCount > PasswordMeterService.CNS_ZERO ) && ( numberCount < passwordLength ) )
 			{
 				final int numberBonus = ( numberCount * PasswordMeterService.CNS_MULTIPLIER_FACTOR_4 );
 				model.setNumberBonus( numberBonus );
@@ -288,7 +288,7 @@ public class PasswordMeterService implements Serializable
 
 			// Definindo "Symbols"
 			model.setSymbolCount( symbolCount );
-			if ( symbolCount > 0 )
+			if ( symbolCount > PasswordMeterService.CNS_ZERO )
 			{
 				final int symbolBonus = ( symbolCount * PasswordMeterService.CNS_MULTIPLIER_FACTOR_6 );
 				model.setSymbolBonus( symbolBonus );
@@ -296,16 +296,46 @@ public class PasswordMeterService implements Serializable
 
 			// Definindo "Middle Numbers or Symbols"
 			model.setMiddleNumberSymbolCount( middleNumberSymbolCount );
-			if ( middleNumberSymbolCount > 0 )
+			if ( middleNumberSymbolCount > PasswordMeterService.CNS_ZERO )
 			{
 				final int middleNumberSymbolBonus = ( middleNumberSymbolCount
 						* PasswordMeterService.CNS_MULTIPLIER_FACTOR_2 );
 				model.setMiddleNumberSymbolBonus( middleNumberSymbolBonus );
 			}
 
+			// Definindo "Requirements"
+			final int arrRequirements[] = new int[] { passwordLength, uppercaseLetterCount, lowercaseLetterCount,
+					numberCount, symbolCount };
+			final int arrRequirementsLength = arrRequirements.length;
+
+			for ( int i = PasswordMeterService.CNS_ZERO; i < arrRequirementsLength; i++ )
+			{
+				final int requirementValue = arrRequirements[ i ];
+				final int minimumValue = ( i == PasswordMeterService.CNS_ZERO ) ? ( minimumPasswordLength - 1 )
+						: PasswordMeterService.CNS_ZERO;
+
+				if ( ( requirementValue == ( minimumValue + 1 ) ) || ( requirementValue > ( minimumValue + 1 ) ) )
+				{
+					requirementsCharacter++;
+				}
+			}
+
+			requirementsCount = requirementsCharacter;
+			model.setRequirementsCount( requirementsCount );
+
+			final int minimumRequirements = ( passwordLength >= minimumPasswordLength ) ? 3 : 4;
+
+			if ( requirementsCount > minimumRequirements )
+			{
+				final int requirementsBonus = ( requirementsCount * PasswordMeterService.CNS_MULTIPLIER_FACTOR_2 );
+				model.setRequirementsBonus( requirementsBonus );
+			}
+
 			// Definindo "Letters Only"
-			if ( ( ( uppercaseLetterCount > 0 ) || ( lowercaseLetterCount > 0 ) )
-					&& ( ( numberCount == 0 ) && ( symbolCount == 0 ) ) )
+			if ( ( ( uppercaseLetterCount > PasswordMeterService.CNS_ZERO )
+					|| ( lowercaseLetterCount > PasswordMeterService.CNS_ZERO ) )
+					&& ( ( numberCount == PasswordMeterService.CNS_ZERO )
+							&& ( symbolCount == PasswordMeterService.CNS_ZERO ) ) )
 			{
 				final int lettersOnlyCount = passwordLength;
 				model.setLettersOnlyCount( lettersOnlyCount );
@@ -313,8 +343,10 @@ public class PasswordMeterService implements Serializable
 			}
 
 			// Definindo "Numbers Only"
-			if ( ( numberCount > 0 )
-					&& ( ( uppercaseLetterCount == 0 ) && ( lowercaseLetterCount == 0 ) && ( symbolCount == 0 ) ) )
+			if ( ( numberCount > PasswordMeterService.CNS_ZERO )
+					&& ( ( uppercaseLetterCount == PasswordMeterService.CNS_ZERO )
+							&& ( lowercaseLetterCount == PasswordMeterService.CNS_ZERO )
+							&& ( symbolCount == PasswordMeterService.CNS_ZERO ) ) )
 			{
 				final int numbersOnlyCount = passwordLength;
 				model.setNumbersOnlyCount( numbersOnlyCount );
@@ -323,7 +355,7 @@ public class PasswordMeterService implements Serializable
 
 			// Definindo "Repeat Characters (Case Insensitive)"
 			model.setRepeatCharactersCount( replicateCharacter );
-			if ( replicateCharacter > 0 )
+			if ( replicateCharacter > PasswordMeterService.CNS_ZERO )
 			{
 				final int repeatCharactersBonus = ( int ) replicateIncrement;
 				model.setRepeatCharactersBonus( repeatCharactersBonus );
@@ -331,7 +363,7 @@ public class PasswordMeterService implements Serializable
 
 			// Definindo "Consecutive Uppercase Letters"
 			model.setConsecutiveUppercaseLetterCount( consecutiveUppercaseLetterCount );
-			if ( consecutiveUppercaseLetterCount > 0 )
+			if ( consecutiveUppercaseLetterCount > PasswordMeterService.CNS_ZERO )
 			{
 				final int consecutiveUppercaseLetterBonus = ( consecutiveUppercaseLetterCount
 						* PasswordMeterService.CNS_MULTIPLIER_FACTOR_2 );
@@ -340,7 +372,7 @@ public class PasswordMeterService implements Serializable
 
 			// Definindo "Consecutive Lowercase Letters"
 			model.setConsecutiveLowercaseLetterCount( consecutiveLowercaseLetterCount );
-			if ( consecutiveLowercaseLetterCount > 0 )
+			if ( consecutiveLowercaseLetterCount > PasswordMeterService.CNS_ZERO )
 			{
 				final int consecutiveLowercaseLetterBonus = ( consecutiveLowercaseLetterCount
 						* PasswordMeterService.CNS_MULTIPLIER_FACTOR_2 );
@@ -349,7 +381,7 @@ public class PasswordMeterService implements Serializable
 
 			// Definindo "Consecutive Numbers"
 			model.setConsecutiveNumbersCount( consecutiveNumberCount );
-			if ( consecutiveNumberCount > 0 )
+			if ( consecutiveNumberCount > PasswordMeterService.CNS_ZERO )
 			{
 				final int consecutiveNumbersBonus = ( consecutiveNumberCount
 						* PasswordMeterService.CNS_MULTIPLIER_FACTOR_2 );
@@ -358,7 +390,7 @@ public class PasswordMeterService implements Serializable
 
 			// Definindo "Sequential Letters (3+)"
 			model.setSequentialLettersCount( sequentialLettersCount );
-			if ( sequentialLettersCount > 0 )
+			if ( sequentialLettersCount > PasswordMeterService.CNS_ZERO )
 			{
 				final int sequentialLettersBonus = ( sequentialLettersCount
 						* PasswordMeterService.CNS_MULTIPLIER_FACTOR_3 );
@@ -367,7 +399,7 @@ public class PasswordMeterService implements Serializable
 
 			// Definindo "Sequential Numbers (3+)"
 			model.setSequentialNumbersCount( sequentialNumbersCount );
-			if ( sequentialNumbersCount > 0 )
+			if ( sequentialNumbersCount > PasswordMeterService.CNS_ZERO )
 			{
 				final int sequentialNumbersBonus = ( sequentialNumbersCount
 						* PasswordMeterService.CNS_MULTIPLIER_FACTOR_3 );
@@ -376,7 +408,7 @@ public class PasswordMeterService implements Serializable
 
 			// Definindo "Sequential Symbols (3+)"
 			model.setSequentialSymbolsCount( sequentialSymbolsCount );
-			if ( sequentialSymbolsCount > 0 )
+			if ( sequentialSymbolsCount > PasswordMeterService.CNS_ZERO )
 			{
 				final int sequentialSymbolsBonus = ( sequentialSymbolsCount
 						* PasswordMeterService.CNS_MULTIPLIER_FACTOR_3 );
