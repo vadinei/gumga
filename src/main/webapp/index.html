@@ -37,13 +37,123 @@
 						<input type="text" id="password" ng-model="password" class="form-control" placeholder="Senha"
 							ng-keyup="checkPassword()" />
 						<h4>
-							<span id="score" class="label" ng-class="scoreClass">{{model.score}}%</span>
-							<span id="complexity" class="label" ng-class="complexityClass">{{model.complexity}}</span>
+							<span id="score" class="label" ng-class="scoreClass">{{model.score}}%</span> <span id="complexity" class="label"
+								ng-class="complexityClass">{{model.complexity}}</span>
 						</h4>
+						<button type="button" class="btn btn-sm btn-default" style="width: 120px;" ng-click="setDetalhe()">{{labelDetalhe}}</button>
 					</div>
 				</div>
 			</div>
 		</div>
+
+		<div class="row" style="border: 1px solid #dcdcdc;" ng-show="statusDetalhe">
+			<div class="col-xs-12">
+				<div class="col-xs-6">
+					<table class="table table-striped">
+						<thead>
+							<th>ADICIONAIS</th>
+							<th>Quantidade</th>
+							<th>Bônus</th>
+						</thead>
+						<tbody>
+							<tr>
+								<td>Número de Caracteres</td>
+								<td>{{model.numberCharacterCount}}</td>
+								<td>{{model.numberCharacterBonus}}</td>
+							</tr>
+							<tr>
+								<td>Letras Maiúsculas</td>
+								<td>{{model.uppercaseLetterCount}}</td>
+								<td>{{model.uppercaseLetterBonus}}</td>
+							</tr>
+							<tr>
+								<td>Letras Minúsculas</td>
+								<td>{{model.lowercaseLetterCount}}</td>
+								<td>{{model.lowercaseLetterBonus}}</td>
+							</tr>
+							<tr>
+								<td>Números</td>
+								<td>{{model.numberCount}}</td>
+								<td>{{model.numberBonus}}</td>
+							</tr>
+							<tr>
+								<td>Símbolos</td>
+								<td>{{model.symbolCount}}</td>
+								<td>{{model.symbolBonus}}</td>
+							</tr>
+							<tr>
+								<td>Número e Símmbolos Internos</td>
+								<td>{{model.middleNumberSymbolCount}}</td>
+								<td>{{model.middleNumberSymbolBonus}}</td>
+							</tr>
+							<tr>
+								<td>Requisitos</td>
+								<td>{{model.requirementsCount}}</td>
+								<td>{{model.requirementsBonus}}</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+
+				<div class="col-xs-6">
+					<table class="table table-striped">
+						<thead>
+							<th>DEDUÇÕES</th>
+							<th>Quantidade</th>
+							<th>Bônus</th>
+						</thead>
+						<tbody>
+							<tr>
+								<td>Somente Letras</td>
+								<td>{{model.lettersOnlyCount}}</td>
+								<td>{{model.lettersOnlyBonus * -1}}</td>
+							</tr>
+							<tr>
+								<td>Somente Números</td>
+								<td>{{model.numbersOnlyCount}}</td>
+								<td>{{model.numbersOnlyBonus * -1}}</td>
+							</tr>
+							<tr>
+								<td>Caracteres Repetidos/Duplicados</td>
+								<td>{{model.repeatCharactersCount}}</td>
+								<td>{{model.repeatCharactersBonus * -1}}</td>
+							</tr>
+							<tr>
+								<td>Letras Maiúsculas Consecutivas</td>
+								<td>{{model.consecutiveUppercaseLetterCount}}</td>
+								<td>{{model.consecutiveUppercaseLetterBonus * -1}}</td>
+							</tr>
+							<tr>
+								<td>Letras Minúsculas Consecutivas</td>
+								<td>{{model.consecutiveLowercaseLetterCount}}</td>
+								<td>{{model.consecutiveLowercaseLetterBonus * -1}}</td>
+							</tr>
+							<tr>
+								<td>Números Consecutivos</td>
+								<td>{{model.consecutiveNumbersCount}}</td>
+								<td>{{model.consecutiveNumbersBonus * -1}}</td>
+							</tr>
+							<tr>
+								<td>Letras Sequenciais</td>
+								<td>{{model.sequentialLettersCount}}</td>
+								<td>{{model.sequentialLettersBonus * -1}}</td>
+							</tr>
+							<tr>
+								<td>Números Sequenciais</td>
+								<td>{{model.sequentialNumbersCount}}</td>
+								<td>{{model.sequentialNumbersBonus * -1}}</td>
+							</tr>
+							<tr>
+								<td>Símbolos Sequenciais</td>
+								<td>{{model.sequentialSymbolsCount}}</td>
+								<td>{{model.sequentialSymbolsBonus * -1}}</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+			</div>
+		</div>
+
 
 	</div>
 

@@ -7,6 +7,8 @@ app.controller("PasswordMeterController", function($scope, $http, $filter)
 
 	$scope.password = "";
 	$scope.scoreClass = "label-default";
+	$scope.labelDetalhe = "Exibir Detalhes...";
+	$scope.statusDetalhe = false;
 	$scope.complexityClass = "label-danger";
 
 	$scope.focoPadrao = function() 
@@ -14,6 +16,12 @@ app.controller("PasswordMeterController", function($scope, $http, $filter)
 		j("#password").focus();
 	};
 
+	$scope.setDetalhe = function() 
+	{
+		$scope.statusDetalhe = !$scope.statusDetalhe;
+		$scope.labelDetalhe = ($scope.statusDetalhe == false) ? "Exibir Detalhes..." : "Ocultar Detalhes";
+	};
+	
 	$scope.setNgClass = function() 
 	{
 		var score = $scope.model.score;
