@@ -57,7 +57,7 @@ public class PasswordMeterController extends BaseVersionController
 
 		try
 		{
-			final PasswordMeterModel model = this.passwordMeterService.checkPassword( password, 0 );
+			final PasswordMeterModel model = this.passwordMeterService.checkPassword( password );
 
 			response.addParameter( "model", model );
 			response.setJsonResponseStatus( JsonResponseStatus.SUCCESS );

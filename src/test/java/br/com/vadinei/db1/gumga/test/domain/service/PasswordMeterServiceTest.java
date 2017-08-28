@@ -21,27 +21,30 @@ public class PasswordMeterServiceTest
 	@Test
 	public void printCheckPassword()
 	{
-		final PasswordMeterModel model = this.service.checkPassword( "aaAaA12@", 8 );
+		final PasswordMeterModel model1 = this.service.checkPassword( "aaAaA12@" );
+		Assert.assertEquals( model1.getScore(), 75 );
+		Assert.assertEquals( model1.getComplexity(), PasswordMeterService.CNS_COMPLEXITY_STRONG );
 
-		// final PasswordMeterModel model = this.service.checkPassword( "aaAaA",
-		// 8 );
+		final PasswordMeterModel model2 = this.service.checkPassword( "aaAaA@" );
+		Assert.assertEquals( model2.getScore(), 35 );
+		Assert.assertEquals( model2.getComplexity(), PasswordMeterService.CNS_COMPLEXITY_WEAK );
 
-		// final PasswordMeterModel model = this.service.checkPassword( "aaaAA",
-		// 8 );
+		final PasswordMeterModel model3 = this.service.checkPassword( "1234" );
+		Assert.assertEquals( model3.getScore(), 4 );
+		Assert.assertEquals( model3.getComplexity(), PasswordMeterService.CNS_COMPLEXITY_VERY_WEAK );
 
-		// final PasswordMeterModel model = this.service.checkPassword( "1234",
-		// 8 );
+		final PasswordMeterModel model4 = this.service.checkPassword( "Tururu2017" );
+		Assert.assertEquals( model4.getScore(), 82 );
+		Assert.assertEquals( model4.getComplexity(), PasswordMeterService.CNS_COMPLEXITY_VERY_STRONG );
 
-		// final PasswordMeterModel model = this.service.checkPassword(
-		// "Tururu2017", 8 );
+		final PasswordMeterModel model5 = this.service.checkPassword( "abcde12345@#$%" );
+		Assert.assertEquals( model5.getScore(), 100 );
+		Assert.assertEquals( model5.getComplexity(), PasswordMeterService.CNS_COMPLEXITY_VERY_STRONG );
 
-		// final PasswordMeterModel model = this.service.checkPassword(
-		// "abcde12345@#$%", 0 );
-
-		print( model );
+		print( model1 );
 	}
 
-	public void print( final PasswordMeterModel model )
+	private void print( final PasswordMeterModel model )
 	{
 		Assert.assertNotNull( model );
 

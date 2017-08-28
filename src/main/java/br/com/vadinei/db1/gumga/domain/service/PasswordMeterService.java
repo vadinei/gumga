@@ -14,17 +14,17 @@ import br.com.vadinei.db1.gumga.domain.model.PasswordMeterModel;
 public class PasswordMeterService implements Serializable
 {
 
-	private static final String CNS_COMPLEXITY_VERY_STRONG = "Muito Forte (Very Strong)";
+	public static final String CNS_COMPLEXITY_VERY_STRONG = "Muito Forte (Very Strong)";
 
-	private static final String CNS_COMPLEXITY_STRONG = "Forte (Strong)";
+	public static final String CNS_COMPLEXITY_STRONG = "Forte (Strong)";
 
-	private static final String CNS_COMPLEXITY_GOOD = "Boa (Good)";
+	public static final String CNS_COMPLEXITY_GOOD = "Boa (Good)";
 
-	private static final String CNS_COMPLEXITY_WEAK = "Fraca (Weak)";
+	public static final String CNS_COMPLEXITY_WEAK = "Fraca (Weak)";
 
-	private static final String CNS_COMPLEXITY_VERY_WEAK = "Muito Fraca (Very Weak)";
+	public static final String CNS_COMPLEXITY_VERY_WEAK = "Muito Fraca (Very Weak)";
 
-	private static final String CNS_COMPLEXITY_TOO_SHORT = "Muito Curta (Too Short)";
+	public static final String CNS_COMPLEXITY_TOO_SHORT = "Muito Curta (Too Short)";
 
 	private static final int CNS_MINIMUM_REQUIREMENTS_4 = 4;
 
@@ -60,11 +60,25 @@ public class PasswordMeterService implements Serializable
 
 	private static final String CNS_ARRAY_SYMBOL = ")!@#$%^&*()";
 
+	private static final int CNS_MINIMUM_PASSWORD_LENGTH_8 = 8;
+
 	/**
 	 * @author José Vádinei Soares (vadinei@hotmail.com) 26 de ago de 2017 -
 	 *         10:58:02
 	 */
 	private static final long serialVersionUID = 6354133538662598235L;
+
+	/**
+	 * @author José Vádinei Soares (vadinei@hotmail.com) 28 de ago de 2017 -
+	 *         15:05:25
+	 * @param password
+	 * @return PasswordMeterModel
+	 */
+	public PasswordMeterModel checkPassword( final String password )
+	{
+		final PasswordMeterModel result = checkPassword( password, PasswordMeterService.CNS_MINIMUM_PASSWORD_LENGTH_8 );
+		return result;
+	}
 
 	/**
 	 * Implementa as regras de negócios para o avaliador de senhas definidas no
@@ -92,9 +106,9 @@ public class PasswordMeterService implements Serializable
 			return model;
 		}
 
-		if ( minimumPasswordLength < 8 )
+		if ( minimumPasswordLength < PasswordMeterService.CNS_MINIMUM_PASSWORD_LENGTH_8 )
 		{
-			minimumPasswordLength = 8;
+			minimumPasswordLength = PasswordMeterService.CNS_MINIMUM_PASSWORD_LENGTH_8;
 		}
 
 		final int passwordLength = password.length();
