@@ -3,6 +3,7 @@
  */
 package br.com.vadinei.db1.gumga.test.domain.service;
 
+import org.junit.Assert;
 import org.junit.Test;
 
 import br.com.vadinei.db1.gumga.domain.model.PasswordMeterModel;
@@ -20,8 +21,7 @@ public class PasswordMeterServiceTest
 	@Test
 	public void printCheckPassword()
 	{
-		// final PasswordMeterModel model = this.service.checkPassword(
-		// "aaAaA12@", 8 );
+		final PasswordMeterModel model = this.service.checkPassword( "aaAaA12@", 8 );
 
 		// final PasswordMeterModel model = this.service.checkPassword( "aaAaA",
 		// 8 );
@@ -35,7 +35,15 @@ public class PasswordMeterServiceTest
 		// final PasswordMeterModel model = this.service.checkPassword(
 		// "Tururu2017", 8 );
 
-		final PasswordMeterModel model = this.service.checkPassword( "abcde12345@#$%", 0 );
+		// final PasswordMeterModel model = this.service.checkPassword(
+		// "abcde12345@#$%", 0 );
+
+		print( model );
+	}
+
+	public void print( final PasswordMeterModel model )
+	{
+		Assert.assertNotNull( model );
 
 		System.out.println( "-----------------------------------------------------" );
 		System.out.println( "PASSWORD..: " + model.getPassword() );

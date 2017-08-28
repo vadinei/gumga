@@ -14,6 +14,18 @@ import br.com.vadinei.db1.gumga.domain.model.PasswordMeterModel;
 public class PasswordMeterService implements Serializable
 {
 
+	private static final String CNS_COMPLEXITY_VERY_STRONG = "Muito Forte (Very Strong)";
+
+	private static final String CNS_COMPLEXITY_STRONG = "Forte (Strong)";
+
+	private static final String CNS_COMPLEXITY_GOOD = "Boa (Good)";
+
+	private static final String CNS_COMPLEXITY_WEAK = "Fraca (Weak)";
+
+	private static final String CNS_COMPLEXITY_VERY_WEAK = "Muito Fraca (Very Weak)";
+
+	private static final String CNS_COMPLEXITY_TOO_SHORT = "Muito Curta (Too Short)";
+
 	private static final int CNS_MINIMUM_REQUIREMENTS_4 = 4;
 
 	private static final int CNS_MINIMUM_REQUIREMENTS_3 = 3;
@@ -69,8 +81,9 @@ public class PasswordMeterService implements Serializable
 	{
 		final PasswordMeterModel model = new PasswordMeterModel();
 
-		// Definindo "Complexity" e "Score" Inicial
-		String complexity = "Muito Curta (Too Short)";
+		// Definindo "Password", "Complexity" e "Score" Inicial.
+		final String complexity = PasswordMeterService.CNS_COMPLEXITY_TOO_SHORT;
+		model.setPassword( password );
 		model.setComplexity( complexity );
 		model.setScore( PasswordMeterService.CNS_NUMBER_0 );
 
@@ -109,8 +122,8 @@ public class PasswordMeterService implements Serializable
 			int consecutiveSymbolCount = PasswordMeterService.CNS_NUMBER_0; // Unused.
 			int consecutiveCharacterCount = PasswordMeterService.CNS_NUMBER_0; // Unused.
 
-			int requirementsCount = PasswordMeterService.CNS_NUMBER_0;
-			int requirementsCharacter = PasswordMeterService.CNS_NUMBER_0;
+			final int requirementsCount = PasswordMeterService.CNS_NUMBER_0;
+			final int requirementsCharacter = PasswordMeterService.CNS_NUMBER_0;
 
 			int uniqueCharacter = PasswordMeterService.CNS_NUMBER_0;
 			int replicateCharacter = PasswordMeterService.CNS_NUMBER_0;
@@ -272,239 +285,506 @@ public class PasswordMeterService implements Serializable
 				}
 			}
 
-			// Definindo "Password"
-			model.setPassword( password );
-
 			// Definindo "Number of Characters"
-			model.setNumberCharacterCount( passwordLength );
-			final int numberCharacterBonus = passwordLength * PasswordMeterService.CNS_MULTIPLIER_FACTOR_4;
-			model.setNumberCharacterBonus( numberCharacterBonus );
+			setNumberCharacter( model, passwordLength );
 
 			// Definindo "Uppercase Letters"
-			model.setUppercaseLetterCount( uppercaseLetterCount );
-			if ( ( uppercaseLetterCount > PasswordMeterService.CNS_NUMBER_0 )
-					&& ( uppercaseLetterCount < passwordLength ) )
-			{
-				final int uppercaseLetterBonus = ( ( passwordLength - uppercaseLetterCount )
-						* PasswordMeterService.CNS_MULTIPLIER_FACTOR_2 );
-				model.setUppercaseLetterBonus( uppercaseLetterBonus );
-			}
+			setUppercaseLetter( model, passwordLength, uppercaseLetterCount );
 
 			// Definindo "Lowercase Letters"
-			model.setLowercaseLetterCount( lowercaseLetterCount );
-			if ( ( lowercaseLetterCount > PasswordMeterService.CNS_NUMBER_0 )
-					&& ( lowercaseLetterCount < passwordLength ) )
-			{
-				final int lowercaseLetterBonus = ( ( passwordLength - lowercaseLetterCount )
-						* PasswordMeterService.CNS_MULTIPLIER_FACTOR_2 );
-				model.setLowercaseLetterBonus( lowercaseLetterBonus );
-			}
+			setLowercaseLetter( model, passwordLength, lowercaseLetterCount );
 
 			// Definindo "Numbers"
-			model.setNumberCount( numberCount );
-			if ( ( numberCount > PasswordMeterService.CNS_NUMBER_0 ) && ( numberCount < passwordLength ) )
-			{
-				final int numberBonus = ( numberCount * PasswordMeterService.CNS_MULTIPLIER_FACTOR_4 );
-				model.setNumberBonus( numberBonus );
-			}
+			setNumber( model, passwordLength, numberCount );
 
 			// Definindo "Symbols"
-			model.setSymbolCount( symbolCount );
-			if ( symbolCount > PasswordMeterService.CNS_NUMBER_0 )
-			{
-				final int symbolBonus = ( symbolCount * PasswordMeterService.CNS_MULTIPLIER_FACTOR_6 );
-				model.setSymbolBonus( symbolBonus );
-			}
+			setSymbol( model, symbolCount );
 
 			// Definindo "Middle Numbers or Symbols"
-			model.setMiddleNumberSymbolCount( middleNumberSymbolCount );
-			if ( middleNumberSymbolCount > PasswordMeterService.CNS_NUMBER_0 )
-			{
-				final int middleNumberSymbolBonus = ( middleNumberSymbolCount
-						* PasswordMeterService.CNS_MULTIPLIER_FACTOR_2 );
-				model.setMiddleNumberSymbolBonus( middleNumberSymbolBonus );
-			}
+			setMiddleNumberSymbol( model, middleNumberSymbolCount );
 
 			// Definindo "Requirements"
-			final int arrRequirements[] = new int[] { passwordLength, uppercaseLetterCount, lowercaseLetterCount,
-					numberCount, symbolCount };
-			final int arrRequirementsLength = arrRequirements.length;
-
-			for ( int i = PasswordMeterService.CNS_NUMBER_0; i < arrRequirementsLength; i++ )
-			{
-				final int requirementValue = arrRequirements[ i ];
-				final int minimumValue = ( i == PasswordMeterService.CNS_NUMBER_0 ) ? ( minimumPasswordLength - 1 )
-						: PasswordMeterService.CNS_NUMBER_0;
-
-				if ( ( requirementValue == ( minimumValue + 1 ) ) || ( requirementValue > ( minimumValue + 1 ) ) )
-				{
-					requirementsCharacter++;
-				}
-			}
-
-			requirementsCount = requirementsCharacter;
-			model.setRequirementsCount( requirementsCount );
-
-			final int minimumRequirements = ( passwordLength >= minimumPasswordLength )
-					? PasswordMeterService.CNS_MINIMUM_REQUIREMENTS_3
-					: PasswordMeterService.CNS_MINIMUM_REQUIREMENTS_4;
-
-			if ( requirementsCount > minimumRequirements )
-			{
-				final int requirementsBonus = ( requirementsCount * PasswordMeterService.CNS_MULTIPLIER_FACTOR_2 );
-				model.setRequirementsBonus( requirementsBonus );
-			}
+			setRequirements( model, minimumPasswordLength, passwordLength, uppercaseLetterCount, lowercaseLetterCount,
+					numberCount, symbolCount, requirementsCharacter );
 
 			// Definindo "Letters Only"
-			if ( ( ( uppercaseLetterCount > PasswordMeterService.CNS_NUMBER_0 )
-					|| ( lowercaseLetterCount > PasswordMeterService.CNS_NUMBER_0 ) )
-					&& ( ( numberCount == PasswordMeterService.CNS_NUMBER_0 )
-							&& ( symbolCount == PasswordMeterService.CNS_NUMBER_0 ) ) )
-			{
-				final int lettersOnlyCount = passwordLength;
-				model.setLettersOnlyCount( lettersOnlyCount );
-				model.setLettersOnlyBonus( lettersOnlyCount );
-			}
+			setLettersOnly( model, passwordLength, uppercaseLetterCount, lowercaseLetterCount, numberCount,
+					symbolCount );
 
 			// Definindo "Numbers Only"
-			if ( ( numberCount > PasswordMeterService.CNS_NUMBER_0 )
-					&& ( ( uppercaseLetterCount == PasswordMeterService.CNS_NUMBER_0 )
-							&& ( lowercaseLetterCount == PasswordMeterService.CNS_NUMBER_0 )
-							&& ( symbolCount == PasswordMeterService.CNS_NUMBER_0 ) ) )
-			{
-				final int numbersOnlyCount = passwordLength;
-				model.setNumbersOnlyCount( numbersOnlyCount );
-				model.setNumbersOnlyBonus( numbersOnlyCount );
-			}
+			setNumbersOnly( model, passwordLength, uppercaseLetterCount, lowercaseLetterCount, numberCount,
+					symbolCount );
 
 			// Definindo "Repeat Characters (Case Insensitive)"
-			model.setRepeatCharactersCount( replicateCharacter );
-			if ( replicateCharacter > PasswordMeterService.CNS_NUMBER_0 )
-			{
-				final int repeatCharactersBonus = ( int ) replicateIncrement;
-				model.setRepeatCharactersBonus( repeatCharactersBonus );
-			}
+			setRepeatCharacters( model, replicateCharacter, replicateIncrement );
 
 			// Definindo "Consecutive Uppercase Letters"
-			model.setConsecutiveUppercaseLetterCount( consecutiveUppercaseLetterCount );
-			if ( consecutiveUppercaseLetterCount > PasswordMeterService.CNS_NUMBER_0 )
-			{
-				final int consecutiveUppercaseLetterBonus = ( consecutiveUppercaseLetterCount
-						* PasswordMeterService.CNS_MULTIPLIER_FACTOR_2 );
-				model.setConsecutiveUppercaseLetterBonus( consecutiveUppercaseLetterBonus );
-			}
+			setConsecutiveUppercaseLetter( model, consecutiveUppercaseLetterCount );
 
 			// Definindo "Consecutive Lowercase Letters"
-			model.setConsecutiveLowercaseLetterCount( consecutiveLowercaseLetterCount );
-			if ( consecutiveLowercaseLetterCount > PasswordMeterService.CNS_NUMBER_0 )
-			{
-				final int consecutiveLowercaseLetterBonus = ( consecutiveLowercaseLetterCount
-						* PasswordMeterService.CNS_MULTIPLIER_FACTOR_2 );
-				model.setConsecutiveLowercaseLetterBonus( consecutiveLowercaseLetterBonus );
-			}
+			setConsecutiveLowercaseLetter( model, consecutiveLowercaseLetterCount );
 
 			// Definindo "Consecutive Numbers"
-			model.setConsecutiveNumbersCount( consecutiveNumberCount );
-			if ( consecutiveNumberCount > PasswordMeterService.CNS_NUMBER_0 )
-			{
-				final int consecutiveNumbersBonus = ( consecutiveNumberCount
-						* PasswordMeterService.CNS_MULTIPLIER_FACTOR_2 );
-				model.setConsecutiveNumbersBonus( consecutiveNumbersBonus );
-			}
+			setConsecutiveNumbers( model, consecutiveNumberCount );
 
 			// Definindo "Sequential Letters (3+)"
-			model.setSequentialLettersCount( sequentialLettersCount );
-			if ( sequentialLettersCount > PasswordMeterService.CNS_NUMBER_0 )
-			{
-				final int sequentialLettersBonus = ( sequentialLettersCount
-						* PasswordMeterService.CNS_MULTIPLIER_FACTOR_3 );
-				model.setSequentialLettersBonus( sequentialLettersBonus );
-			}
+			setSequentialLetters( model, sequentialLettersCount );
 
 			// Definindo "Sequential Numbers (3+)"
-			model.setSequentialNumbersCount( sequentialNumbersCount );
-			if ( sequentialNumbersCount > PasswordMeterService.CNS_NUMBER_0 )
-			{
-				final int sequentialNumbersBonus = ( sequentialNumbersCount
-						* PasswordMeterService.CNS_MULTIPLIER_FACTOR_3 );
-				model.setSequentialNumbersBonus( sequentialNumbersBonus );
-			}
+			setSequentialNumbers( model, sequentialNumbersCount );
 
 			// Definindo "Sequential Symbols (3+)"
-			model.setSequentialSymbolsCount( sequentialSymbolsCount );
-			if ( sequentialSymbolsCount > PasswordMeterService.CNS_NUMBER_0 )
-			{
-				final int sequentialSymbolsBonus = ( sequentialSymbolsCount
-						* PasswordMeterService.CNS_MULTIPLIER_FACTOR_3 );
-				model.setSequentialSymbolsBonus( sequentialSymbolsBonus );
-			}
+			setSequentialSymbols( model, sequentialSymbolsCount );
 
-			// Definindo "Score"
-			int scoreAdditions = 0;
-			scoreAdditions += model.getNumberCharacterBonus();
-			scoreAdditions += model.getUppercaseLetterBonus();
-			scoreAdditions += model.getLowercaseLetterBonus();
-			scoreAdditions += model.getNumberBonus();
-			scoreAdditions += model.getSymbolBonus();
-			scoreAdditions += model.getMiddleNumberSymbolBonus();
-			scoreAdditions += model.getRequirementsBonus();
+			// Definindo e obtendo o "Score" para "Additions"
+			final int scoreAdditions = getScoreAdditions( model );
 
-			int scoreDeductions = 0;
-			scoreDeductions += model.getLettersOnlyBonus();
-			scoreDeductions += model.getNumbersOnlyBonus();
-			scoreDeductions += model.getRepeatCharactersBonus();
-			scoreDeductions += model.getConsecutiveUppercaseLetterBonus();
-			scoreDeductions += model.getConsecutiveLowercaseLetterBonus();
-			scoreDeductions += model.getConsecutiveNumbersBonus();
-			scoreDeductions += model.getSequentialLettersBonus();
-			scoreDeductions += model.getSequentialNumbersBonus();
-			scoreDeductions += model.getSequentialSymbolsBonus();
+			// Definindo e obtendo o "Score" para "Deductions"
+			final int scoreDeductions = getScoreDeductions( model );
 
-			// Refinando o "Score"
-			int score = scoreAdditions - scoreDeductions;
-
-			if ( score > PasswordMeterService.CNS_NUMBER_100 )
-			{
-				score = PasswordMeterService.CNS_NUMBER_100;
-			}
-			else if ( score < PasswordMeterService.CNS_NUMBER_0 )
-			{
-				score = PasswordMeterService.CNS_NUMBER_0;
-			}
-
-			model.setScore( score );
+			// Definindo e obtendo o "Score"
+			final int score = getScore( model, scoreAdditions, scoreDeductions );
 
 			// Definindo "Complexity"
-
-			if ( ( score >= PasswordMeterService.CNS_NUMBER_0 ) && ( score < PasswordMeterService.CNS_NUMBER_20 ) )
-			{
-				complexity = "Muito Fraca (Very Weak)";
-			}
-			else if ( ( score >= PasswordMeterService.CNS_NUMBER_20 )
-					&& ( score < PasswordMeterService.CNS_NUMBER_40 ) )
-			{
-				complexity = "Fraca (Weak)";
-			}
-			else if ( ( score >= PasswordMeterService.CNS_NUMBER_40 )
-					&& ( score < PasswordMeterService.CNS_NUMBER_60 ) )
-			{
-				complexity = "Boa (Good)";
-			}
-			else if ( ( score >= PasswordMeterService.CNS_NUMBER_60 )
-					&& ( score < PasswordMeterService.CNS_NUMBER_80 ) )
-			{
-				complexity = "Forte (Strong)";
-			}
-			else if ( ( score >= PasswordMeterService.CNS_NUMBER_80 )
-					&& ( score <= PasswordMeterService.CNS_NUMBER_100 ) )
-			{
-				complexity = "Muito Forte (Very Strong)";
-			}
-
-			model.setComplexity( complexity );
+			setComplexity( model, score );
 		}
 
 		return model;
+	}
+
+	/**
+	 * @author José Vádinei Soares (vadinei@hotmail.com) 28 de ago de 2017 -
+	 *         01:22:46
+	 * @param model
+	 * @param score
+	 */
+	private void setComplexity( final PasswordMeterModel model, final int score )
+	{
+		final String complexity = getComplexity( score );
+		model.setComplexity( complexity );
+	}
+
+	/**
+	 * @author José Vádinei Soares (vadinei@hotmail.com) 28 de ago de 2017 -
+	 *         01:15:19
+	 * @param score
+	 * @return Complexity
+	 */
+	private String getComplexity( final int score )
+	{
+		String result = null;
+
+		if ( ( score >= PasswordMeterService.CNS_NUMBER_0 ) && ( score < PasswordMeterService.CNS_NUMBER_20 ) )
+		{
+			result = PasswordMeterService.CNS_COMPLEXITY_VERY_WEAK;
+		}
+		else if ( ( score >= PasswordMeterService.CNS_NUMBER_20 ) && ( score < PasswordMeterService.CNS_NUMBER_40 ) )
+		{
+			result = PasswordMeterService.CNS_COMPLEXITY_WEAK;
+		}
+		else if ( ( score >= PasswordMeterService.CNS_NUMBER_40 ) && ( score < PasswordMeterService.CNS_NUMBER_60 ) )
+		{
+			result = PasswordMeterService.CNS_COMPLEXITY_GOOD;
+		}
+		else if ( ( score >= PasswordMeterService.CNS_NUMBER_60 ) && ( score < PasswordMeterService.CNS_NUMBER_80 ) )
+		{
+			result = PasswordMeterService.CNS_COMPLEXITY_STRONG;
+		}
+		else if ( ( score >= PasswordMeterService.CNS_NUMBER_80 ) && ( score <= PasswordMeterService.CNS_NUMBER_100 ) )
+		{
+			result = PasswordMeterService.CNS_COMPLEXITY_VERY_STRONG;
+		}
+
+		return result;
+	}
+
+	/**
+	 * @author José Vádinei Soares (vadinei@hotmail.com) 28 de ago de 2017 -
+	 *         01:17:46
+	 * @param model
+	 * @param scoreAdditions
+	 * @param scoreDeductions
+	 * @return Score
+	 */
+	private int getScore( final PasswordMeterModel model, final int scoreAdditions, final int scoreDeductions )
+	{
+		int score = ( scoreAdditions - scoreDeductions );
+
+		if ( score > PasswordMeterService.CNS_NUMBER_100 )
+		{
+			score = PasswordMeterService.CNS_NUMBER_100;
+		}
+		else if ( score < PasswordMeterService.CNS_NUMBER_0 )
+		{
+			score = PasswordMeterService.CNS_NUMBER_0;
+		}
+
+		model.setScore( score );
+		return score;
+	}
+
+	/**
+	 * @author José Vádinei Soares (vadinei@hotmail.com) 28 de ago de 2017 -
+	 *         01:11:54
+	 * @param model
+	 * @return Score Deductions
+	 */
+	private int getScoreDeductions( final PasswordMeterModel model )
+	{
+		int result = 0;
+
+		result += model.getLettersOnlyBonus();
+		result += model.getNumbersOnlyBonus();
+		result += model.getRepeatCharactersBonus();
+		result += model.getConsecutiveUppercaseLetterBonus();
+		result += model.getConsecutiveLowercaseLetterBonus();
+		result += model.getConsecutiveNumbersBonus();
+		result += model.getSequentialLettersBonus();
+		result += model.getSequentialNumbersBonus();
+		result += model.getSequentialSymbolsBonus();
+
+		return result;
+	}
+
+	/**
+	 * @author José Vádinei Soares (vadinei@hotmail.com) 28 de ago de 2017 -
+	 *         01:09:53
+	 * @param model
+	 * @return Score Additions
+	 */
+	private int getScoreAdditions( final PasswordMeterModel model )
+	{
+		int result = 0;
+
+		result += model.getNumberCharacterBonus();
+		result += model.getUppercaseLetterBonus();
+		result += model.getLowercaseLetterBonus();
+		result += model.getNumberBonus();
+		result += model.getSymbolBonus();
+		result += model.getMiddleNumberSymbolBonus();
+		result += model.getRequirementsBonus();
+
+		return result;
+	}
+
+	/**
+	 * @author José Vádinei Soares (vadinei@hotmail.com) 28 de ago de 2017 -
+	 *         01:05:10
+	 * @param model
+	 * @param sequentialSymbolsCount
+	 */
+	private void setSequentialSymbols( final PasswordMeterModel model, final int sequentialSymbolsCount )
+	{
+		model.setSequentialSymbolsCount( sequentialSymbolsCount );
+		if ( sequentialSymbolsCount > PasswordMeterService.CNS_NUMBER_0 )
+		{
+			final int sequentialSymbolsBonus = ( sequentialSymbolsCount
+					* PasswordMeterService.CNS_MULTIPLIER_FACTOR_3 );
+			model.setSequentialSymbolsBonus( sequentialSymbolsBonus );
+		}
+	}
+
+	/**
+	 * @author José Vádinei Soares (vadinei@hotmail.com) 28 de ago de 2017 -
+	 *         01:04:58
+	 * @param model
+	 * @param sequentialNumbersCount
+	 */
+	private void setSequentialNumbers( final PasswordMeterModel model, final int sequentialNumbersCount )
+	{
+		model.setSequentialNumbersCount( sequentialNumbersCount );
+		if ( sequentialNumbersCount > PasswordMeterService.CNS_NUMBER_0 )
+		{
+			final int sequentialNumbersBonus = ( sequentialNumbersCount
+					* PasswordMeterService.CNS_MULTIPLIER_FACTOR_3 );
+			model.setSequentialNumbersBonus( sequentialNumbersBonus );
+		}
+	}
+
+	/**
+	 * @author José Vádinei Soares (vadinei@hotmail.com) 28 de ago de 2017 -
+	 *         01:04:44
+	 * @param model
+	 * @param sequentialLettersCount
+	 */
+	private void setSequentialLetters( final PasswordMeterModel model, final int sequentialLettersCount )
+	{
+		model.setSequentialLettersCount( sequentialLettersCount );
+		if ( sequentialLettersCount > PasswordMeterService.CNS_NUMBER_0 )
+		{
+			final int sequentialLettersBonus = ( sequentialLettersCount
+					* PasswordMeterService.CNS_MULTIPLIER_FACTOR_3 );
+			model.setSequentialLettersBonus( sequentialLettersBonus );
+		}
+	}
+
+	/**
+	 * @author José Vádinei Soares (vadinei@hotmail.com) 28 de ago de 2017 -
+	 *         01:04:31
+	 * @param model
+	 * @param consecutiveNumberCount
+	 */
+	private void setConsecutiveNumbers( final PasswordMeterModel model, final int consecutiveNumberCount )
+	{
+		model.setConsecutiveNumbersCount( consecutiveNumberCount );
+		if ( consecutiveNumberCount > PasswordMeterService.CNS_NUMBER_0 )
+		{
+			final int consecutiveNumbersBonus = ( consecutiveNumberCount
+					* PasswordMeterService.CNS_MULTIPLIER_FACTOR_2 );
+			model.setConsecutiveNumbersBonus( consecutiveNumbersBonus );
+		}
+	}
+
+	/**
+	 * @author José Vádinei Soares (vadinei@hotmail.com) 28 de ago de 2017 -
+	 *         01:04:14
+	 * @param model
+	 * @param consecutiveLowercaseLetterCount
+	 */
+	private void setConsecutiveLowercaseLetter( final PasswordMeterModel model,
+			final int consecutiveLowercaseLetterCount )
+	{
+		model.setConsecutiveLowercaseLetterCount( consecutiveLowercaseLetterCount );
+		if ( consecutiveLowercaseLetterCount > PasswordMeterService.CNS_NUMBER_0 )
+		{
+			final int consecutiveLowercaseLetterBonus = ( consecutiveLowercaseLetterCount
+					* PasswordMeterService.CNS_MULTIPLIER_FACTOR_2 );
+			model.setConsecutiveLowercaseLetterBonus( consecutiveLowercaseLetterBonus );
+		}
+	}
+
+	/**
+	 * @author José Vádinei Soares (vadinei@hotmail.com) 28 de ago de 2017 -
+	 *         01:03:45
+	 * @param model
+	 * @param consecutiveUppercaseLetterCount
+	 */
+	private void setConsecutiveUppercaseLetter( final PasswordMeterModel model,
+			final int consecutiveUppercaseLetterCount )
+	{
+		model.setConsecutiveUppercaseLetterCount( consecutiveUppercaseLetterCount );
+		if ( consecutiveUppercaseLetterCount > PasswordMeterService.CNS_NUMBER_0 )
+		{
+			final int consecutiveUppercaseLetterBonus = ( consecutiveUppercaseLetterCount
+					* PasswordMeterService.CNS_MULTIPLIER_FACTOR_2 );
+			model.setConsecutiveUppercaseLetterBonus( consecutiveUppercaseLetterBonus );
+		}
+	}
+
+	/**
+	 * @author José Vádinei Soares (vadinei@hotmail.com) 28 de ago de 2017 -
+	 *         01:03:29
+	 * @param model
+	 * @param replicateCharacter
+	 * @param replicateIncrement
+	 */
+	private void setRepeatCharacters( final PasswordMeterModel model, final int replicateCharacter,
+			final double replicateIncrement )
+	{
+		model.setRepeatCharactersCount( replicateCharacter );
+		if ( replicateCharacter > PasswordMeterService.CNS_NUMBER_0 )
+		{
+			final int repeatCharactersBonus = ( int ) replicateIncrement;
+			model.setRepeatCharactersBonus( repeatCharactersBonus );
+		}
+	}
+
+	/**
+	 * @author José Vádinei Soares (vadinei@hotmail.com) 28 de ago de 2017 -
+	 *         01:03:10
+	 * @param model
+	 * @param passwordLength
+	 * @param uppercaseLetterCount
+	 * @param lowercaseLetterCount
+	 * @param numberCount
+	 * @param symbolCount
+	 */
+	private void setNumbersOnly( final PasswordMeterModel model, final int passwordLength,
+			final int uppercaseLetterCount, final int lowercaseLetterCount, final int numberCount,
+			final int symbolCount )
+	{
+		if ( ( numberCount > PasswordMeterService.CNS_NUMBER_0 )
+				&& ( ( uppercaseLetterCount == PasswordMeterService.CNS_NUMBER_0 )
+						&& ( lowercaseLetterCount == PasswordMeterService.CNS_NUMBER_0 )
+						&& ( symbolCount == PasswordMeterService.CNS_NUMBER_0 ) ) )
+		{
+			final int numbersOnlyCount = passwordLength;
+			model.setNumbersOnlyCount( numbersOnlyCount );
+			model.setNumbersOnlyBonus( numbersOnlyCount );
+		}
+	}
+
+	/**
+	 * @author José Vádinei Soares (vadinei@hotmail.com) 28 de ago de 2017 -
+	 *         01:02:42
+	 * @param model
+	 * @param passwordLength
+	 * @param uppercaseLetterCount
+	 * @param lowercaseLetterCount
+	 * @param numberCount
+	 * @param symbolCount
+	 */
+	private void setLettersOnly( final PasswordMeterModel model, final int passwordLength,
+			final int uppercaseLetterCount, final int lowercaseLetterCount, final int numberCount,
+			final int symbolCount )
+	{
+		if ( ( ( uppercaseLetterCount > PasswordMeterService.CNS_NUMBER_0 )
+				|| ( lowercaseLetterCount > PasswordMeterService.CNS_NUMBER_0 ) )
+				&& ( ( numberCount == PasswordMeterService.CNS_NUMBER_0 )
+						&& ( symbolCount == PasswordMeterService.CNS_NUMBER_0 ) ) )
+		{
+			final int lettersOnlyCount = passwordLength;
+			model.setLettersOnlyCount( lettersOnlyCount );
+			model.setLettersOnlyBonus( lettersOnlyCount );
+		}
+	}
+
+	/**
+	 * @author José Vádinei Soares (vadinei@hotmail.com) 28 de ago de 2017 -
+	 *         01:02:15
+	 * @param model
+	 * @param minimumPasswordLength
+	 * @param passwordLength
+	 * @param uppercaseLetterCount
+	 * @param lowercaseLetterCount
+	 * @param numberCount
+	 * @param symbolCount
+	 * @param requirementsCharacter
+	 */
+	private void setRequirements( final PasswordMeterModel model, final int minimumPasswordLength,
+			final int passwordLength, final int uppercaseLetterCount, final int lowercaseLetterCount,
+			final int numberCount, final int symbolCount, int requirementsCharacter )
+	{
+		int requirementsCount;
+		final int arrRequirements[] = new int[] { passwordLength, uppercaseLetterCount, lowercaseLetterCount,
+				numberCount, symbolCount };
+		final int arrRequirementsLength = arrRequirements.length;
+
+		for ( int i = PasswordMeterService.CNS_NUMBER_0; i < arrRequirementsLength; i++ )
+		{
+			final int requirementValue = arrRequirements[ i ];
+			final int minimumValue = ( i == PasswordMeterService.CNS_NUMBER_0 ) ? ( minimumPasswordLength - 1 )
+					: PasswordMeterService.CNS_NUMBER_0;
+
+			if ( ( requirementValue == ( minimumValue + 1 ) ) || ( requirementValue > ( minimumValue + 1 ) ) )
+			{
+				requirementsCharacter++;
+			}
+		}
+
+		requirementsCount = requirementsCharacter;
+		model.setRequirementsCount( requirementsCount );
+
+		final int minimumRequirements = ( passwordLength >= minimumPasswordLength )
+				? PasswordMeterService.CNS_MINIMUM_REQUIREMENTS_3
+				: PasswordMeterService.CNS_MINIMUM_REQUIREMENTS_4;
+
+		if ( requirementsCount > minimumRequirements )
+		{
+			final int requirementsBonus = ( requirementsCount * PasswordMeterService.CNS_MULTIPLIER_FACTOR_2 );
+			model.setRequirementsBonus( requirementsBonus );
+		}
+	}
+
+	/**
+	 * @author José Vádinei Soares (vadinei@hotmail.com) 28 de ago de 2017 -
+	 *         01:00:44
+	 * @param model
+	 * @param middleNumberSymbolCount
+	 */
+	private void setMiddleNumberSymbol( final PasswordMeterModel model, final int middleNumberSymbolCount )
+	{
+		model.setMiddleNumberSymbolCount( middleNumberSymbolCount );
+		if ( middleNumberSymbolCount > PasswordMeterService.CNS_NUMBER_0 )
+		{
+			final int middleNumberSymbolBonus = ( middleNumberSymbolCount
+					* PasswordMeterService.CNS_MULTIPLIER_FACTOR_2 );
+			model.setMiddleNumberSymbolBonus( middleNumberSymbolBonus );
+		}
+	}
+
+	/**
+	 * @author José Vádinei Soares (vadinei@hotmail.com) 28 de ago de 2017 -
+	 *         01:00:33
+	 * @param model
+	 * @param symbolCount
+	 */
+	private void setSymbol( final PasswordMeterModel model, final int symbolCount )
+	{
+		model.setSymbolCount( symbolCount );
+		if ( symbolCount > PasswordMeterService.CNS_NUMBER_0 )
+		{
+			final int symbolBonus = ( symbolCount * PasswordMeterService.CNS_MULTIPLIER_FACTOR_6 );
+			model.setSymbolBonus( symbolBonus );
+		}
+	}
+
+	/**
+	 * @author José Vádinei Soares (vadinei@hotmail.com) 28 de ago de 2017 -
+	 *         01:00:05
+	 * @param model
+	 * @param passwordLength
+	 * @param numberCount
+	 */
+	private void setNumber( final PasswordMeterModel model, final int passwordLength, final int numberCount )
+	{
+		model.setNumberCount( numberCount );
+		if ( ( numberCount > PasswordMeterService.CNS_NUMBER_0 ) && ( numberCount < passwordLength ) )
+		{
+			final int numberBonus = ( numberCount * PasswordMeterService.CNS_MULTIPLIER_FACTOR_4 );
+			model.setNumberBonus( numberBonus );
+		}
+	}
+
+	/**
+	 * @author José Vádinei Soares (vadinei@hotmail.com) 28 de ago de 2017 -
+	 *         00:59:49
+	 * @param model
+	 * @param passwordLength
+	 * @param lowercaseLetterCount
+	 */
+	private void setLowercaseLetter( final PasswordMeterModel model, final int passwordLength,
+			final int lowercaseLetterCount )
+	{
+		model.setLowercaseLetterCount( lowercaseLetterCount );
+		if ( ( lowercaseLetterCount > PasswordMeterService.CNS_NUMBER_0 ) && ( lowercaseLetterCount < passwordLength ) )
+		{
+			final int lowercaseLetterBonus = ( ( passwordLength - lowercaseLetterCount )
+					* PasswordMeterService.CNS_MULTIPLIER_FACTOR_2 );
+			model.setLowercaseLetterBonus( lowercaseLetterBonus );
+		}
+	}
+
+	/**
+	 * @author José Vádinei Soares (vadinei@hotmail.com) 28 de ago de 2017 -
+	 *         00:59:22
+	 * @param model
+	 * @param passwordLength
+	 * @param uppercaseLetterCount
+	 */
+	private void setUppercaseLetter( final PasswordMeterModel model, final int passwordLength,
+			final int uppercaseLetterCount )
+	{
+		model.setUppercaseLetterCount( uppercaseLetterCount );
+		if ( ( uppercaseLetterCount > PasswordMeterService.CNS_NUMBER_0 ) && ( uppercaseLetterCount < passwordLength ) )
+		{
+			final int uppercaseLetterBonus = ( ( passwordLength - uppercaseLetterCount )
+					* PasswordMeterService.CNS_MULTIPLIER_FACTOR_2 );
+			model.setUppercaseLetterBonus( uppercaseLetterBonus );
+		}
+	}
+
+	/**
+	 * @author José Vádinei Soares (vadinei@hotmail.com) 28 de ago de 2017 -
+	 *         00:58:30
+	 * @param model
+	 * @param passwordLength
+	 */
+	private void setNumberCharacter( final PasswordMeterModel model, final int passwordLength )
+	{
+		model.setNumberCharacterCount( passwordLength );
+		final int numberCharacterBonus = passwordLength * PasswordMeterService.CNS_MULTIPLIER_FACTOR_4;
+		model.setNumberCharacterBonus( numberCharacterBonus );
 	}
 
 }
