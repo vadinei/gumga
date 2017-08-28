@@ -2,7 +2,7 @@ package br.com.vadinei.db1.gumga.domain.service;
 
 import java.io.Serializable;
 
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
 import br.com.vadinei.db1.gumga.domain.model.PasswordMeterModel;
 
@@ -10,7 +10,7 @@ import br.com.vadinei.db1.gumga.domain.model.PasswordMeterModel;
  * @author José Vádinei Soares (vadinei@hotmail.com) 26 de ago de 2017 -
  *         10:57:56
  */
-@Component
+@Service
 public class PasswordMeterService implements Serializable
 {
 
@@ -69,9 +69,10 @@ public class PasswordMeterService implements Serializable
 	{
 		final PasswordMeterModel model = new PasswordMeterModel();
 
-		// Definindo "Complexity" Inicial
-		String complexity = "Too Short";
+		// Definindo "Complexity" e "Score" Inicial
+		String complexity = "Muito Curta (Too Short)";
 		model.setComplexity( complexity );
+		model.setScore( PasswordMeterService.CNS_NUMBER_0 );
 
 		if ( ( password == null ) || ( password.length() == PasswordMeterService.CNS_NUMBER_0 ) )
 		{
@@ -477,27 +478,27 @@ public class PasswordMeterService implements Serializable
 
 			if ( ( score >= PasswordMeterService.CNS_NUMBER_0 ) && ( score < PasswordMeterService.CNS_NUMBER_20 ) )
 			{
-				complexity = "Very Weak";
+				complexity = "Muito Fraca (Very Weak)";
 			}
 			else if ( ( score >= PasswordMeterService.CNS_NUMBER_20 )
 					&& ( score < PasswordMeterService.CNS_NUMBER_40 ) )
 			{
-				complexity = "Weak";
+				complexity = "Fraca (Weak)";
 			}
 			else if ( ( score >= PasswordMeterService.CNS_NUMBER_40 )
 					&& ( score < PasswordMeterService.CNS_NUMBER_60 ) )
 			{
-				complexity = "Good";
+				complexity = "Boa (Good)";
 			}
 			else if ( ( score >= PasswordMeterService.CNS_NUMBER_60 )
 					&& ( score < PasswordMeterService.CNS_NUMBER_80 ) )
 			{
-				complexity = "Strong";
+				complexity = "Forte (Strong)";
 			}
 			else if ( ( score >= PasswordMeterService.CNS_NUMBER_80 )
 					&& ( score <= PasswordMeterService.CNS_NUMBER_100 ) )
 			{
-				complexity = "Very Strong";
+				complexity = "Muito Forte (Very Strong)";
 			}
 
 			model.setComplexity( complexity );

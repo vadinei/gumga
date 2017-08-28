@@ -1,13 +1,58 @@
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Vádinei | DB1 | Gumga</title>
+
+<!-- Normalize -->
+<link href="/resources/css/normalize.css" rel="stylesheet">
+
+<!-- Bootstrap -->
+<link href="/resources/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+
+<!-- Bootstrap Theme -->
+<link href="/resources/bootstrap/css/bootstrap-theme.min.css" rel="stylesheet">
+
 </head>
 
-<body>
-	Bem-vindo ao Projeto DB1 | Gumga!
+<body ng-app="gumgaApp">
+
+	<div class="container" ng-controller="PasswordMeterController">
+
+		<div class="row">
+			<div class="page-header">
+				<h3 class="text-center">José Vádinei Soares | DB1 | Gumga</h3>
+			</div>
+		</div>
+
+		<div class="row"
+			style="border: 1px solid #dcdcdc; padding-top: 10px; padding-bottom: 0px; padding-left: 25px; padding-right: 25px;">
+			<h5 style="font-weight: bold;">AVALIADOR DE SEGURANÇA DE SENHA</h5>
+			<div class="col-xs-12 jumbotron"
+				style="background-color: #f8f8f8; border: 1px solid #dcdcdc; padding-top: 20px; padding-bottom: 20px; padding-left: 40px;">
+				<div class="col-xs-5">
+					<input type="text" id="password" ng-model="password" class="form-control" placeholder="Senha"
+						ng-keyup="checkPassword()" />
+					<h4>
+						<label id="score" class="label label-default">{{model.score}}%</label> <label id="score"
+							class="label label-danger">{{model.complexity}}</label>
+					</h4>
+					</h4>
+				</div>
+			</div>
+		</div>
+
+	</div>
+
 </body>
+
+<script src="/resources/js/jquery/jquery-3.2.1.min.js"></script>
+<script src="/resources/bootstrap/js/bootstrap.min.js"></script>
+
+<script src="/resources/js/angular/angular.min.js"></script>
+<script src="/resources/js/angular/angular-locale_pt-br.js"></script>
+<script src="/resources/js/angular/controller/password-meter-controller.js"></script>
 
 </html>

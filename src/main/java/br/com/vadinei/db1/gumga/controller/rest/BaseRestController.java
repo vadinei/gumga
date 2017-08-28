@@ -2,7 +2,6 @@ package br.com.vadinei.db1.gumga.controller.rest;
 
 import java.io.Serializable;
 
-import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -12,7 +11,6 @@ import org.springframework.web.bind.annotation.RestController;
  */
 @RestController
 @RequestMapping( "/api/" )
-@EnableAutoConfiguration
 public abstract class BaseRestController implements Serializable
 {
 
