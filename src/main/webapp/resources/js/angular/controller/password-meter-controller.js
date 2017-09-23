@@ -48,7 +48,8 @@ app.controller("PasswordMeterController", function($scope, $http, $filter)
 	$scope.checkPassword = function() 
 	{
 		var url = "/api/v1/password-meter/check-password?password="
-				+ encodeURIComponent($scope.password);
+			// + encodeURIComponent($scope.password);	// Remove a entrada somente com espaços
+			+ encodeURIComponent(j("#password").val()); // Não remove a entrada somente com espaços
 
 		$http({
 			url : url,
